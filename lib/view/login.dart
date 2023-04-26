@@ -1,14 +1,11 @@
-import 'package:chatt_app/database_service.dart';
-import 'package:chatt_app/register.dart';
-import 'package:chatt_app/widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-import 'authsevice.dart';
+import '../controller/authsevice.dart';
+import '../controller/shared preference.dart';
 import 'home.dart';
-import 'shared preference.dart';
+import 'register.dart';
+import 'widgets.dart';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,13 +15,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool isLoading = false;
   AuthService authService = AuthService();
   final formkey = GlobalKey<FormState>();
   String email = '';
   String password = '';
-  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -56,9 +55,7 @@ class _LoginState extends State<Login> {
                           color: Theme.of(context).primaryColor,
                         )),
                     onChanged: (value) {
-                      setState(() {
-                        email = value;
-                      });
+                      email = value;
                     },
                     validator: (value) {
                       return RegExp(
@@ -143,10 +140,6 @@ class _LoginState extends State<Login> {
       });
       await authService.loginuser(email, password).then((value) async {
         if (value == true) {
-          QuerySnapshot snapshot =
-              await Databaseservice(FirebaseAuth.instance.currentUser!.uid)
-                  .gettingUserData(email);
-          Shared.savename(snapshot.docs[0]['fullName']);
           Shared.saveemail(email);
           Shared.saveloggedin(true);
           nextscreenreplace(context, MyHomePage());

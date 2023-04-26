@@ -1,15 +1,14 @@
 import 'dart:io';
-
-import 'package:chatt_app/database_service.dart';
-import 'package:chatt_app/home.dart';
-import 'package:chatt_app/search.dart';
-import 'package:chatt_app/shared%20preference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'authsevice.dart';
+import '../controller/authsevice.dart';
+import '../controller/database_service.dart';
+import '../controller/shared preference.dart';
+import 'home.dart';
+import 'search.dart';
 import 'widgets.dart';
 
 String? url;
@@ -17,8 +16,9 @@ String? url;
 class Profilepage extends StatefulWidget {
   String email;
   String name;
+  String groupId;
 
-  Profilepage({super.key, required this.email, required this.name});
+  Profilepage({super.key, required this.email, required this.name,required this.groupId});
 
   @override
   State<Profilepage> createState() => _ProfilepageState();

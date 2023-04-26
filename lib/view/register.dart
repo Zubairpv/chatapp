@@ -1,12 +1,10 @@
-import 'package:chatt_app/authsevice.dart';
-import 'package:chatt_app/home.dart';
-import 'package:chatt_app/login.dart';
-import 'package:chatt_app/shared%20preference.dart';
-import 'package:chatt_app/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import '../controller/authsevice.dart';
+import '../controller/shared preference.dart';
+import 'home.dart';
+import 'login.dart';
+import 'widgets.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});

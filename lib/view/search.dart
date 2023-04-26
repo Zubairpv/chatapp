@@ -1,10 +1,11 @@
-import 'package:chatt_app/chatpage.dart';
-import 'package:chatt_app/database_service.dart';
-import 'package:chatt_app/shared%20preference.dart';
-import 'package:chatt_app/widgets.dart';
+import 'package:chatt_app/view/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/database_service.dart';
+import '../controller/shared preference.dart';
+import 'chatpage.dart';
 
 class Searchpage extends StatefulWidget {
   const Searchpage({super.key});
@@ -139,7 +140,7 @@ class _SearchpageState extends State<Searchpage> {
         },
       );
     } else {
-      return Text('databhh');
+      return const Text('');
     }
   }
 

@@ -1,10 +1,10 @@
-import 'package:chatt_app/login.dart';
-import 'package:chatt_app/shared%20preference.dart';
-import 'package:chatt_app/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'profile.dart';
+import 'controller/shared preference.dart';
+import 'view/home.dart';
+import 'view/login.dart';
+import 'view/profile.dart';
+import 'view/widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

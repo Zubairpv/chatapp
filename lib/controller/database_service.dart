@@ -14,6 +14,9 @@ class Databaseservice {
       FirebaseFirestore.instance.collection("users");
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection("groups");
+  getid(String res) {
+    return res.substring(0, res.indexOf("_"));
+  }
 
   // saving the userdata
   Future savingUserData(String fullName, String email) async {
@@ -139,7 +142,9 @@ class Databaseservice {
     });
   }
 
- Future upadateprofile(File image) async {
+  Future upadateprofile(
+    File image,
+  ) async {
     try {
       final ref =
           FirebaseStorage.instance.ref().child('$uid'); // specify the file name
@@ -147,9 +152,18 @@ class Databaseservice {
 
       imageurl = await ref.getDownloadURL();
       DocumentReference userDocumentReference = userCollection.doc(uid);
+
       return await userDocumentReference.update({"profilePic": imageurl});
     } catch (e) {
       print(e);
     }
+  }
+
+  Future <String>profile(groupId, int index) async {
+    DocumentSnapshot a = await groupCollection.doc(groupId).get();
+    var b = a.get('members');
+    DocumentSnapshot c = await userCollection.doc(getid(b[index])).get();
+    String d = c.get('profilePic');
+    return d;
   }
 }

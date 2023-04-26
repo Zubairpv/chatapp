@@ -1,10 +1,16 @@
-import 'dart:math';
 
-import 'package:chatt_app/database_service.dart';
-import 'package:chatt_app/shared%20preference.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+import 'database_service.dart';
+import 'shared preference.dart';
+
 
 class AuthService {
+  String email = '';
+  String fullname = '';
+  String password = '';
+  bool isLoading = false;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   Future loginuser(String email, String password) async {
     try {

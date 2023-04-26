@@ -1,23 +1,21 @@
-import 'package:chatt_app/home.dart';
-import 'package:chatt_app/widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
-import 'database_service.dart';
+import '../controller/database_service.dart';
+import 'home.dart';
+import 'widgets.dart';
 
 class Groupinfo extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String adminName;
+  final String userName;
   const Groupinfo(
       {super.key,
       required this.groupId,
       required this.groupName,
-      required this.adminName});
+      required this.adminName,
+      required this.userName});
 
   @override
   State<Groupinfo> createState() => _GroupinfoState();
@@ -25,6 +23,7 @@ class Groupinfo extends StatefulWidget {
 
 class _GroupinfoState extends State<Groupinfo> {
   Stream? members;
+  Stream? profile;
   @override
   void initState() {
     getmembers();
@@ -132,13 +131,13 @@ class _GroupinfoState extends State<Groupinfo> {
                   ],
                 ),
               ),
-              memberlist()
+              memberList()
             ],
           ),
         ));
   }
 
-  memberlist() {
+  memberList() {
     return StreamBuilder(
       stream: members,
       builder: (context, AsyncSnapshot snapshot) {
@@ -146,27 +145,43 @@ class _GroupinfoState extends State<Groupinfo> {
           if (snapshot.data['members'] != null) {
             if (snapshot.data['members'].length != 0) {
               return ListView.builder(
-                shrinkWrap: true,
                 itemCount: snapshot.data['members'].length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     child: ListTile(
-                      onTap: () {
-                        print(snapshot.data['members'].length);
-                      },
-                      leading: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Text(
-                          getname(snapshot.data['members'][index])
-                              .substring(0, 2)
-                              .toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                      leading: FutureBuilder<String>(
+                        future: Databaseservice(
+                                FirebaseAuth.instance.currentUser!.uid)
+                            .profile(widget.groupId, index),
+                        builder: (context, snapshott) {
+                          if (snapshott.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.grey,
+                            );
+                          } else if (snapshott.hasError ||
+                              snapshott.data == null ||
+                              snapshott.data!.isEmpty) {
+                            return CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.red,
+                              child: Text(
+                                getname(snapshot.data['members'][index])
+                                    .substring(0, 1)
+                                    .toUpperCase(),
+                              ),
+                            );
+                          } else {
+                            return CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(snapshott.data!),
+                            );
+                          }
+                        },
                       ),
                       title: Text(getname(snapshot.data['members'][index])),
                       subtitle: Text(getid(snapshot.data['members'][index])),
@@ -175,21 +190,20 @@ class _GroupinfoState extends State<Groupinfo> {
                 },
               );
             } else {
-              return Center(
-                child: Text('no members'),
+              return const Center(
+                child: Text("NO MEMBERS"),
               );
             }
           } else {
-            return Center(
-              child: Text('no members'),
+            return const Center(
+              child: Text("NO MEMBERS"),
             );
           }
         } else {
           return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
-          );
+              child: CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
+          ));
         }
       },
     );

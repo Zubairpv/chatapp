@@ -1,14 +1,14 @@
-import 'package:chatt_app/authsevice.dart';
-import 'package:chatt_app/grouptile.dart';
-import 'package:chatt_app/login.dart';
-import 'package:chatt_app/profile.dart';
-import 'package:chatt_app/search.dart';
-import 'package:chatt_app/shared%20preference.dart';
-import 'package:chatt_app/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'database_service.dart';
+import '../controller/authsevice.dart';
+import '../controller/database_service.dart';
+import '../controller/shared preference.dart';
+import 'grouptile.dart';
+import 'login.dart';
+import 'profile.dart';
+import 'search.dart';
+import 'widgets.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     Profilepage(
                       email: email,
-                      name: name,
+                      name: name, groupId: '',
                     ));
               },
               leading: Icon(Icons.person),
