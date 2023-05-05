@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chatt_app/view/voicetile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -30,7 +31,7 @@ class _ChatPageState extends State<ChatPage> {
   Stream<QuerySnapshot>? chats;
   TextEditingController messageController = TextEditingController();
   String admin = "";
-  bool isVoice = false;
+
   int i = 0;
   FlutterSoundRecorder recorder = FlutterSoundRecorder();
   bool isRecording = false;
@@ -40,14 +41,11 @@ class _ChatPageState extends State<ChatPage> {
     if (await Permission.microphone.request().isGranted) {
       // Permission is granted
       try {
-        setState(() {
-          i++;
-        });
+        setState(() {});
         await recorder.openRecorder();
         await recorder.startRecorder(toFile: '/sdcard/Download/$i.wav');
         setState(() {
           isRecording = true;
-          isVoice = true;
         });
       } catch (err) {
         print('Error: $err');
@@ -69,11 +67,18 @@ class _ChatPageState extends State<ChatPage> {
       final task = ref.putFile(File('/sdcard/Download/$i.wav'));
       final snapshot = await task.whenComplete(() {});
       final downloadUrl = await snapshot.ref.getDownloadURL();
-      sendMessage(downloadUrl, 'voice');
+      Map<String, dynamic> chatMessageMap = {
+        "url": downloadUrl,
+        "sender": widget.userName,
+        "time": DateTime.now().millisecondsSinceEpoch,
+        "messegeType": 'voice'
+      };
+
+      Databaseservice(FirebaseAuth.instance.currentUser!.uid)
+          .sendMessage(widget.groupId, chatMessageMap);
 
       setState(() {
         isRecording = false;
-        isVoice = false;
       });
     } catch (err) {
       print('Error: $err');
@@ -111,6 +116,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -135,7 +141,11 @@ class _ChatPageState extends State<ChatPage> {
       body: Stack(
         children: <Widget>[
           // chat messages here
-          chatMessages(),
+          SizedBox(
+            height: size.height * 0.79,
+            width: size.width,
+            child: chatMessages(),
+          ),
           Container(
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
@@ -177,7 +187,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    sendMessage(messageController.text, 'text');
+                    sendMessage();
                   },
                   child: Container(
                     height: 50,
@@ -209,13 +219,21 @@ class _ChatPageState extends State<ChatPage> {
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  return MessageTile(
-                    message: snapshot.data.docs[index]['message'],
-                    sender: snapshot.data.docs[index]['sender'],
-                    sentByMe:
-                        widget.userName == snapshot.data.docs[index]['sender'],
-                    isVoice: true,
-                  );
+                  if (snapshot.data.docs[index]['messegeType'] == 'voice') {
+                    return Voicetile(
+                      url: snapshot.data.docs[index]['url'],
+                      sender: snapshot.data.docs[index]['sender'],
+                      sentByMe: widget.userName ==
+                          snapshot.data.docs[index]['sender'],
+                    );
+                  } else {
+                    return MessageTile(
+                      message: snapshot.data.docs[index]['message'],
+                      sender: snapshot.data.docs[index]['sender'],
+                      sentByMe: widget.userName ==
+                          snapshot.data.docs[index]['sender'],
+                    );
+                  }
                 },
               )
             : Container();
@@ -223,13 +241,13 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  sendMessage(String message, String type) {
-    if (message.isNotEmpty) {
+  sendMessage() {
+    if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
-        "message": message,
+        "message": messageController.text,
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
-        "messegeType": type
+        "messegeType": 'text'
       };
 
       Databaseservice(FirebaseAuth.instance.currentUser!.uid)

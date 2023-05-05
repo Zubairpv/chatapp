@@ -18,7 +18,11 @@ class Profilepage extends StatefulWidget {
   String name;
   String groupId;
 
-  Profilepage({super.key, required this.email, required this.name,required this.groupId});
+  Profilepage(
+      {super.key,
+      required this.email,
+      required this.name,
+      required this.groupId});
 
   @override
   State<Profilepage> createState() => _ProfilepageState();
@@ -133,7 +137,23 @@ class _ProfilepageState extends State<Profilepage> {
                                 )),
                             IconButton(
                                 onPressed: () {
-                                  pickImage(ImageSource.gallery);
+                                  pickImage(ImageSource.gallery)
+                                      .whenComplete(() {
+                                    Databaseservice(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .upadateprofile(image!)
+                                        .whenComplete(() async {
+                                      QuerySnapshot snapshot =
+                                          await Databaseservice(FirebaseAuth
+                                                  .instance.currentUser!.uid)
+                                              .gettingUserData(widget.email);
+                                      setState(() {
+                                        url = snapshot.docs[0]['profilePic'];
+                                        Shared.saveprofile(url!);
+                                      });
+                                      
+                                    });
+                                  });
                                 },
                                 icon: Icon(
                                   Icons.photo_camera_back,

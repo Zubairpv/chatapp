@@ -46,5 +46,4 @@ class Shared {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return sf.getString(urll);
   }
-
 }

@@ -6,7 +6,6 @@ import 'home.dart';
 import 'register.dart';
 import 'widgets.dart';
 
-
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -23,7 +22,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -122,7 +120,6 @@ class _LoginState extends State<Login> {
                                 decoration: TextDecoration.underline),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                print('ikk');
                                 nextscreen(context, const Register());
                               })
                       ]))

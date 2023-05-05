@@ -1,21 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
-class MessageTile extends StatefulWidget {
-  final String message;
+class Voicetile extends StatefulWidget {
+  final String url;
   final String sender;
   final bool sentByMe;
-  const MessageTile({
+  const Voicetile({
     Key? key,
-    required this.message,
+    required this.url,
     required this.sender,
     required this.sentByMe,
   }) : super(key: key);
 
   @override
-  State<MessageTile> createState() => _MessageTileState();
+  State<Voicetile> createState() => _VoicetileState();
 }
 
-class _MessageTileState extends State<MessageTile> {
+class _VoicetileState extends State<Voicetile> {
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Future play() async {
+    try {
+      audioPlayer.setUrl(widget.url);
+      audioPlayer.play();
+      setState(() {
+        isPlaying = true;
+      });
+    } catch (e) {
+      debugPrint('error$e');
+    }
+  }
+
+  Future pause() async {
+    try {
+      audioPlayer.pause();
+      setState(() {
+        isPlaying = false;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +56,7 @@ class _MessageTileState extends State<MessageTile> {
             ? const EdgeInsets.only(left: 30)
             : const EdgeInsets.only(right: 30),
         padding:
-            const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+            const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
         decoration: BoxDecoration(
             borderRadius: widget.sentByMe
                 ? const BorderRadius.only(
@@ -61,9 +87,11 @@ class _MessageTileState extends State<MessageTile> {
             const SizedBox(
               height: 8,
             ),
-            Text(widget.message,
-                textAlign: TextAlign.start,
-                style: const TextStyle(fontSize: 16, color: Colors.white))
+            IconButton(
+                onPressed: () {
+                  audioPlayer.playerState.playing ? pause() : play();
+                },
+                icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow)),
           ],
         ),
       ),
