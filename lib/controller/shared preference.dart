@@ -26,6 +26,11 @@ class Shared {
     return sf.setString(uemail, email);
   }
 
+  static Future<bool?> savefile1(int i) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.setInt('file', i);
+  }
+
 //get sf
   static Future<bool?> getloggedin() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
@@ -40,6 +45,11 @@ class Shared {
   static Future<String?> getemail() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return sf.getString(uemail);
+  }
+
+  static Future<int?> getFile() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getInt('file');
   }
 
   static Future<String?> getimage() async {

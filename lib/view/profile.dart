@@ -10,6 +10,10 @@ import '../controller/shared preference.dart';
 import 'home.dart';
 import 'search.dart';
 import 'widgets.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 String? url;
 
@@ -49,15 +53,29 @@ class _ProfilepageState extends State<Profilepage> {
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 50),
           children: [
-            url != null
-                ? CircleAvatar(
-                    backgroundImage: NetworkImage(url!),
+            FutureBuilder<File?>(
+              future: getProfileImage(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Icon(
+                    Icons.error,
+                    size: 160,
+                  );
+                } else if (snapshot.data != null) {
+                  return CircleAvatar(
+                    backgroundImage: FileImage(snapshot.data!),
                     radius: 80,
-                  )
-                : Icon(
+                  );
+                } else {
+                  return Icon(
                     Icons.person,
                     size: 160,
-                  ),
+                  );
+                }
+              },
+            ),
             Text(
               widget.name,
               textAlign: TextAlign.center,
@@ -116,6 +134,7 @@ class _ProfilepageState extends State<Profilepage> {
                                 onPressed: () {
                                   pickImage(ImageSource.camera)
                                       .whenComplete(() {
+                                    Navigator.pop(context);
                                     Databaseservice(FirebaseAuth
                                             .instance.currentUser!.uid)
                                         .upadateprofile(image!)
@@ -139,6 +158,7 @@ class _ProfilepageState extends State<Profilepage> {
                                 onPressed: () {
                                   pickImage(ImageSource.gallery)
                                       .whenComplete(() {
+                                    Navigator.pop(context);
                                     Databaseservice(FirebaseAuth
                                             .instance.currentUser!.uid)
                                         .upadateprofile(image!)
@@ -151,7 +171,6 @@ class _ProfilepageState extends State<Profilepage> {
                                         url = snapshot.docs[0]['profilePic'];
                                         Shared.saveprofile(url!);
                                       });
-                                      
                                     });
                                   });
                                 },
@@ -218,14 +237,29 @@ class _ProfilepageState extends State<Profilepage> {
   }
 
   File? image;
+
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+
+      final appDir = await getApplicationDocumentsDirectory();
+      final profileDir = Directory('${appDir.path}/profile');
+      await profileDir.create(recursive: true);
+
+      final imageFile = File('${profileDir.path}/profile_image.jpg');
+      await imageFile.writeAsBytes(await image.readAsBytes());
+
+      setState(() => this.image = imageFile);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
+  }
+
+  Future<File?> getProfileImage() async {
+    final appDir = await getApplicationDocumentsDirectory();
+    final imageFile = File('${appDir.path}/profile/profile_image.jpg');
+
+    return await imageFile.exists() ? imageFile : null;
   }
 }

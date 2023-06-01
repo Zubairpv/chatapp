@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chatt_app/controller/shared%20preference.dart';
 import 'package:chatt_app/view/voicetile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../controller/database_service.dart';
 import 'groupinfo.dart';
 import 'messegetile.dart';
@@ -35,13 +35,15 @@ class _ChatPageState extends State<ChatPage> {
   int i = 0;
   FlutterSoundRecorder recorder = FlutterSoundRecorder();
   bool isRecording = false;
+
   Future<void> startRecording() async {
-    // Check for and request necessary permissions
+    var status = await Permission.storage.request();
+    if (!status.isGranted) {
+      return;
+    }
     Permission.microphone.request();
     if (await Permission.microphone.request().isGranted) {
-      // Permission is granted
       try {
-        setState(() {});
         await recorder.openRecorder();
         await recorder.startRecorder(toFile: '/sdcard/Download/$i.wav');
         setState(() {
@@ -57,43 +59,48 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> stopRecording() async {
-    try {
-      await recorder.stopRecorder();
-      await recorder.closeRecorder();
-      final storage = FirebaseStorage.instance;
-      final ref = storage
-          .ref()
-          .child('voice_messages/${DateTime.now().millisecondsSinceEpoch}.wav');
-      final task = ref.putFile(File('/sdcard/Download/$i.wav'));
-      final snapshot = await task.whenComplete(() {});
-      final downloadUrl = await snapshot.ref.getDownloadURL();
-      Map<String, dynamic> chatMessageMap = {
-        "url": downloadUrl,
-        "sender": widget.userName,
-        "time": DateTime.now().millisecondsSinceEpoch,
-        "messegeType": 'voice'
-      };
+    var status = await Permission.storage.request();
+    if (!status.isGranted) {
+      return;
+    } else {
+      try {
+        await recorder.stopRecorder();
+        await recorder.closeRecorder();
+        final storage = FirebaseStorage.instance;
+        final ref = storage.ref().child(
+            'voice_messages/${DateTime.now().millisecondsSinceEpoch}.wav');
+        final task = ref.putFile(File('/sdcard/Download/$i.wav'));
+        final snapshot = await task.whenComplete(() {});
+        final downloadUrl = await snapshot.ref.getDownloadURL();
+        Map<String, dynamic> chatMessageMap = {
+          "url": downloadUrl,
+          "sender": widget.userName,
+          "time": DateTime.now().millisecondsSinceEpoch,
+          "messegeType": 'voice'
+        };
 
-      Databaseservice(FirebaseAuth.instance.currentUser!.uid)
-          .sendMessage(widget.groupId, chatMessageMap);
+        Databaseservice(FirebaseAuth.instance.currentUser!.uid)
+            .sendMessage(widget.groupId, chatMessageMap);
 
-      setState(() {
-        isRecording = false;
-      });
-    } catch (err) {
-      print('Error: $err');
+        setState(() {
+          isRecording = false;
+          i++;
+          Shared.savefile1(i);
+        });
+      } catch (err) {
+        print('Error: $err');
+      }
     }
-  }
-
-  @override
-  void dispose() {
-    recorder.closeRecorder();
-    super.dispose();
   }
 
   @override
   void initState() {
     getChatandAdmin();
+    Shared.getFile().then((value) {
+      setState(() {
+        i = value!;
+      });
+    });
     super.initState();
   }
 
@@ -139,8 +146,7 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       body: Stack(
-        children: <Widget>[
-          // chat messages here
+        children: <Widget>[    
           SizedBox(
             height: size.height * 0.79,
             width: size.width,
@@ -160,7 +166,7 @@ class _ChatPageState extends State<ChatPage> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: isRecording ? "recording" : "Send a message...",
-                    hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                    hintStyle: const TextStyle(color: Colors.white, fontSize: 16),
                     border: InputBorder.none,
                   ),
                 )),
@@ -181,13 +187,14 @@ class _ChatPageState extends State<ChatPage> {
                     child: Center(
                         child: Icon(
                       isRecording ? Icons.send : Icons.mic,
-                      color: Color.fromARGB(255, 0, 0, 0),
+                      color: const Color.fromARGB(255, 0, 0, 0),
                     )),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
                     sendMessage();
+                  
                   },
                   child: Container(
                     height: 50,

@@ -22,9 +22,14 @@ class _VoicetileState extends State<Voicetile> {
   Future play() async {
     try {
       audioPlayer.setUrl(widget.url);
-      audioPlayer.play();
+
       setState(() {
         isPlaying = true;
+      });
+      audioPlayer.play().whenComplete(() {
+        setState(() {
+          isPlaying = false;
+        });
       });
     } catch (e) {
       debugPrint('error$e');

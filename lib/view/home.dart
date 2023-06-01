@@ -109,7 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     Profilepage(
                       email: email,
-                      name: name, groupId: '',
+                      name: name,
+                      groupId: '',
                     ));
               },
               leading: Icon(Icons.person),
@@ -184,27 +185,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return StreamBuilder(
         stream: groups,
         builder: ((context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data['groups'] != null) {
-              if (snapshot.data['groups'].length != 0) {
-                return ListView.builder(
-                    itemCount: snapshot.data['groups'].length,
-                    itemBuilder: (context, index) {
-                      return GroupTile(
-                          groupId: getid(snapshot.data['groups'][index]),
-                          groupName: getName(snapshot.data['groups'][index]),
-                          userName: snapshot.data["fullName"]);
-                    });
-              } else {
-                return newGroupwidget();
-              }
+          if (snapshot.data['groups'] != null) {
+            if (snapshot.data['groups'].length != 0) {
+              return ListView.builder(
+                  itemCount: snapshot.data['groups'].length,
+                  itemBuilder: (context, index) {
+                    return GroupTile(
+                        groupId: getid(snapshot.data['groups'][index]),
+                        groupName: getName(snapshot.data['groups'][index]),
+                        userName: snapshot.data["fullName"]);
+                  });
             } else {
               return newGroupwidget();
             }
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return newGroupwidget();
           }
         }));
   }
