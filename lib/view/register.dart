@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../controller/authsevice.dart';
-import '../controller/shared preference.dart';
+import '../controller/shared_preference.dart';
 import 'home.dart';
 import 'login.dart';
 import 'widgets.dart';
@@ -28,19 +28,19 @@ class _RegisterState extends State<Register> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
           child: Form(
               key: formkey,
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Groupie',
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Create your account now to chat and explore',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                   ),
@@ -48,7 +48,7 @@ class _RegisterState extends State<Register> {
                   TextFormField(
                     decoration: textinputdecoration.copyWith(
                         labelText: 'Full name',
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.email,
                           color: primarycolor,
                         )),
@@ -65,13 +65,13 @@ class _RegisterState extends State<Register> {
                       }
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     decoration: textinputdecoration.copyWith(
                         labelText: 'Email',
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.email,
                           color: primarycolor,
                         )),
@@ -88,14 +88,14 @@ class _RegisterState extends State<Register> {
                           : 'Enter valid Email';
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     obscureText: true,
                     decoration: textinputdecoration.copyWith(
                         labelText: 'Password',
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock,
                           color: primarycolor,
                         )),
@@ -112,7 +112,7 @@ class _RegisterState extends State<Register> {
                       });
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
@@ -125,27 +125,27 @@ class _RegisterState extends State<Register> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30)),
                             elevation: 0,
-                            primary: Theme.of(context).primaryColor),
-                        child: Text(
+                            backgroundColor: Theme.of(context).primaryColor),
+                        child: const Text(
                           'Register',
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text.rich(TextSpan(
                       text: "Already have an account?",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
+                      style: const TextStyle(color: Colors.black, fontSize: 14),
                       children: [
                         TextSpan(
                             text: 'login here',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.black,
                                 decoration: TextDecoration.underline),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                nextscreen(context, Login());
+                                nextscreen(context, const Login());
                               })
                       ]))
                 ],
@@ -167,7 +167,7 @@ class _RegisterState extends State<Register> {
           Shared.savename(fullname);
           Shared.saveemail(email);
           Shared.saveloggedin(true);
-          nextscreenreplace(context, MyHomePage());
+          nextscreenreplace(context, const MyHomePage());
         } else {
           showsnackbar(context, Colors.red, value);
           setState(() {

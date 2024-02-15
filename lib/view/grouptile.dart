@@ -22,7 +22,7 @@ class _GroupTileState extends State<GroupTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: ListTile(
         onTap: () {
           nextscreen(
@@ -38,18 +38,18 @@ class _GroupTileState extends State<GroupTile> {
           child: Text(
             widget.groupName.substring(0, 1).toUpperCase(),
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ),
         title: Text(
           widget.groupName,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
           "join the conversation as ${widget.userName}",
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.bold,
           ),

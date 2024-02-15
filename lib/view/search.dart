@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/database_service.dart';
-import '../controller/shared preference.dart';
+import '../controller/shared_preference.dart';
 import 'chatpage.dart';
 
 class Searchpage extends StatefulWidget {
@@ -51,7 +51,7 @@ class _SearchpageState extends State<Searchpage> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
+        title: const Text(
           'Search',
           style: TextStyle(
               fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
@@ -61,22 +61,22 @@ class _SearchpageState extends State<Searchpage> {
         children: [
           Container(
             color: Theme.of(context).primaryColor,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Row(
               children: [
                 Expanded(
                     child: TextField(
                   controller: searchcontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search for groups...',
                       hintStyle: TextStyle(color: Colors.white, fontSize: 16)),
                 )),
                 InkWell(
                   onTap: () {
-                    print("a$hasSearch");
+                    debugPrint("a$hasSearch");
                     inisiateSearchMethod();
-                    print(hasSearch);
+                    debugPrint(hasSearch.toString());
                   },
                   child: Container(
                     width: 40,
@@ -84,7 +84,7 @@ class _SearchpageState extends State<Searchpage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40),
                         color: Colors.white.withOpacity(0.1)),
-                    child: Icon(
+                    child: const Icon(
                       Icons.search,
                       color: Colors.white,
                     ),
@@ -93,7 +93,7 @@ class _SearchpageState extends State<Searchpage> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           isLoading
@@ -172,19 +172,20 @@ class _SearchpageState extends State<Searchpage> {
       ), // CircleAvatar
       title: Text(
         'Group name:$groupName',
-        style: TextStyle(fontWeight: FontWeight.w600),
+        style: const TextStyle(fontWeight: FontWeight.w600),
       ),
       subtitle: Text("Admin: ${getname(admin)}"),
       trailing: InkWell(
           onTap: () async {
+            final a = showsnackbar(
+                context, Colors.green, "Successfully joined he group");
             await Databaseservice(FirebaseAuth.instance.currentUser!.uid)
                 .toggleGroupJoin(groupId, userName, groupName);
             if (isJoined) {
               setState(() {
                 isJoined = !isJoined;
               });
-              showsnackbar(
-                  context, Colors.green, "Successfully joined he group");
+              a;
               Future.delayed(const Duration(seconds: 2), () {
                 nextscreen(
                     context,
@@ -202,23 +203,25 @@ class _SearchpageState extends State<Searchpage> {
           },
           child: isJoined
               ? Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.white, width: 1)),
-                  child: Text(
+                  child: const Text(
                     'Joined',
                     style: TextStyle(color: Colors.white),
                   ),
                 )
               : Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.white, width: 1)),
-                  child: Text(
+                  child: const Text(
                     'Join',
                     style: TextStyle(color: Colors.white),
                   ),

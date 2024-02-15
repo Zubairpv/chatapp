@@ -1,9 +1,11 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/authsevice.dart';
 import '../controller/database_service.dart';
-import '../controller/shared preference.dart';
+import '../controller/shared_preference.dart';
 import 'grouptile.dart';
 import 'login.dart';
 import 'profile.dart';
@@ -69,36 +71,36 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: [
             IconButton(
                 onPressed: () {
-                  nextscreen(context, Searchpage());
+                  nextscreen(context, const Searchpage());
                 },
-                icon: Icon(Icons.search))
+                icon: const Icon(Icons.search))
           ],
           title: const Text('Groups')),
       drawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 50),
+          padding: const EdgeInsets.symmetric(vertical: 50),
           children: [
             url != null
                 ? CircleAvatar(
                     backgroundImage: NetworkImage(url!),
                     radius: 80,
                   )
-                : Icon(
+                : const Icon(
                     Icons.person,
                     size: 160,
                   ),
             Text(
               name,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             ListTile(
               onTap: () {},
               selectedColor: Theme.of(context).primaryColor,
               selected: true,
-              leading: Icon(Icons.group),
-              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              title: Text(
+              leading: const Icon(Icons.group),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              title: const Text(
                 'Groups',
                 style: TextStyle(color: Colors.black),
               ),
@@ -113,9 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       groupId: '',
                     ));
               },
-              leading: Icon(Icons.person),
-              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              title: Text(
+              leading: const Icon(Icons.person),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              title: const Text(
                 'Profile',
                 style: TextStyle(color: Colors.black),
               ),
@@ -126,14 +128,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Logout'),
-                        content: Text('Are you sure?'),
+                        title: const Text('Logout'),
+                        content: const Text('Are you sure?'),
                         actions: [
                           TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text(
+                              child: const Text(
                                 'cancel    ',
                                 style: TextStyle(fontSize: 20),
                               )),
@@ -144,10 +146,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
-                                        builder: ((context) => Login())),
+                                        builder: ((context) => const Login())),
                                     (route) => false);
                               },
-                              child: Text(
+                              child: const Text(
                                 'ok',
                                 style: TextStyle(fontSize: 20),
                               )),
@@ -155,9 +157,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     });
               },
-              leading: Icon(Icons.exit_to_app),
-              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              title: Text(
+              leading: const Icon(Icons.exit_to_app),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              title: const Text(
                 'logout',
                 style: TextStyle(color: Colors.black),
               ),
@@ -172,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: Colors.white,
           size: 20,
@@ -211,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return StatefulBuilder(
             builder: (context, setState) {
               return AlertDialog(
-                title: Text(
+                title: const Text(
                   'Create a group',
                   textAlign: TextAlign.start,
                 ),
@@ -230,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 groupName = value;
                               });
                             },
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                             decoration: textinputdecoration,
                           )
                   ],
@@ -240,12 +242,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('Cancel'),
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                     ),
+                    child: const Text('Cancel'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -261,12 +263,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       showsnackbar(
                           context, Colors.green, 'Group created Successfully.');
                     },
-                    child: Text('Ok'),
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                     ),
+                    child: const Text('Ok'),
                   ),
                 ],
               );
@@ -277,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   newGroupwidget() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -286,16 +288,16 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: () {
               popuop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.add_circle,
               color: Colors.grey,
               size: 75,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             "you've not joined any group,tap on the add icon to create a group or also search from top seach button",
             textAlign: TextAlign.center,
           )

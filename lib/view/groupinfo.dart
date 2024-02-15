@@ -53,7 +53,7 @@ class _GroupinfoState extends State<Groupinfo> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text('Group info'),
+          title: const Text('Group info'),
           centerTitle: true,
           actions: [
             IconButton(
@@ -62,14 +62,14 @@ class _GroupinfoState extends State<Groupinfo> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('Exit'),
-                          content: Text('Are you sure exit the group?'),
+                          title: const Text('Exit'),
+                          content: const Text('Are you sure exit the group?'),
                           actions: [
                             TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: Text(
+                                child: const Text(
                                   'cancel    ',
                                   style: TextStyle(fontSize: 20),
                                 )),
@@ -82,9 +82,9 @@ class _GroupinfoState extends State<Groupinfo> {
                                           getname(widget.adminName),
                                           widget.groupName)
                                       .whenComplete(() => nextscreenreplace(
-                                          context, MyHomePage()));
+                                          context, const MyHomePage()));
                                 },
-                                child: Text(
+                                child: const Text(
                                   'ok',
                                   style: TextStyle(fontSize: 20),
                                 )),
@@ -92,15 +92,15 @@ class _GroupinfoState extends State<Groupinfo> {
                         );
                       });
                 },
-                icon: Icon(Icons.exit_to_app))
+                icon: const Icon(Icons.exit_to_app))
           ],
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Theme.of(context).primaryColor.withOpacity(0.2)),
@@ -111,18 +111,18 @@ class _GroupinfoState extends State<Groupinfo> {
                       backgroundColor: Theme.of(context).primaryColor,
                       child: Text(
                         widget.groupName.substring(0, 1).toUpperCase(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w500, color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Group:${widget.groupName}'),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text('Admin:${getname(widget.adminName)}')
@@ -159,7 +159,7 @@ class _GroupinfoState extends State<Groupinfo> {
                         builder: (context, snapshott) {
                           if (snapshott.connectionState ==
                               ConnectionState.waiting) {
-                            return CircleAvatar(
+                            return const CircleAvatar(
                               radius: 30,
                               backgroundColor: Colors.grey,
                             );

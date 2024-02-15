@@ -6,23 +6,20 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../controller/authsevice.dart';
 import '../controller/database_service.dart';
-import '../controller/shared preference.dart';
+import '../controller/shared_preference.dart';
 import 'home.dart';
 import 'search.dart';
 import 'widgets.dart';
-import 'dart:io';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 String? url;
 
 class Profilepage extends StatefulWidget {
-  String email;
-  String name;
-  String groupId;
+ final String email;
+ final String name;
+ final String groupId;
 
-  Profilepage(
+  const Profilepage(
       {super.key,
       required this.email,
       required this.name,
@@ -44,22 +41,22 @@ class _ProfilepageState extends State<Profilepage> {
           actions: [
             IconButton(
                 onPressed: () {
-                  nextscreen(context, Searchpage());
+                  nextscreen(context, const Searchpage());
                 },
-                icon: Icon(Icons.search))
+                icon: const Icon(Icons.search))
           ],
           title: const Text('Profile')),
       drawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 50),
+          padding: const EdgeInsets.symmetric(vertical: 50),
           children: [
             FutureBuilder<File?>(
               future: getProfileImage(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Icon(
+                  return const Icon(
                     Icons.error,
                     size: 160,
                   );
@@ -69,7 +66,7 @@ class _ProfilepageState extends State<Profilepage> {
                     radius: 80,
                   );
                 } else {
-                  return Icon(
+                  return const Icon(
                     Icons.person,
                     size: 160,
                   );
@@ -79,15 +76,15 @@ class _ProfilepageState extends State<Profilepage> {
             Text(
               widget.name,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             ListTile(
               onTap: () {
-                nextscreen(context, MyHomePage());
+                nextscreen(context, const MyHomePage());
               },
-              leading: Icon(Icons.group),
-              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              title: Text(
+              leading: const Icon(Icons.group),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              title: const Text(
                 'Groups',
                 style: TextStyle(color: Colors.black),
               ),
@@ -96,18 +93,18 @@ class _ProfilepageState extends State<Profilepage> {
               selectedColor: Theme.of(context).primaryColor,
               selected: true,
               onTap: () {},
-              leading: Icon(Icons.person),
-              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              title: Text(
+              leading: const Icon(Icons.person),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              title: const Text(
                 'Profile',
                 style: TextStyle(color: Colors.black),
               ),
             ),
             ListTile(
               onTap: () {},
-              leading: Icon(Icons.exit_to_app),
-              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              title: Text(
+              leading: const Icon(Icons.exit_to_app),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              title: const Text(
                 'logout',
                 style: TextStyle(color: Colors.black),
               ),
@@ -116,7 +113,7 @@ class _ProfilepageState extends State<Profilepage> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 170),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 170),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -126,7 +123,7 @@ class _ProfilepageState extends State<Profilepage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Pick'),
+                        title: const Text('Pick'),
                         content: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -150,7 +147,7 @@ class _ProfilepageState extends State<Profilepage> {
                                     });
                                   });
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.camera,
                                   size: 20,
                                 )),
@@ -174,7 +171,7 @@ class _ProfilepageState extends State<Profilepage> {
                                     });
                                   });
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.photo_camera_back,
                                   size: 20,
                                 )),
@@ -182,7 +179,7 @@ class _ProfilepageState extends State<Profilepage> {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.exit_to_app,
                                   size: 20,
                                 ))
@@ -196,37 +193,37 @@ class _ProfilepageState extends State<Profilepage> {
                       backgroundImage: NetworkImage(url!),
                       radius: 80,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.person,
                       size: 160,
                     ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'fullname:',
                   style: TextStyle(fontSize: 17),
                 ),
                 Text(
                   widget.name,
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 )
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Email:',
                   style: TextStyle(fontSize: 17),
                 ),
                 Text(
                   widget.email,
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                 )
               ],
             )
@@ -252,7 +249,7 @@ class _ProfilepageState extends State<Profilepage> {
 
       setState(() => this.image = imageFile);
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      debugPrint('Failed to pick image: $e');
     }
   }
 

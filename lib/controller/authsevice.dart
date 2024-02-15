@@ -1,9 +1,10 @@
 
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 import 'database_service.dart';
-import 'shared preference.dart';
+import 'shared_preference.dart';
 
 
 class AuthService {
@@ -14,7 +15,7 @@ class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   Future loginuser(String email, String password) async {
     try {
-      User user = (await firebaseAuth.signInWithEmailAndPassword(
+      User? user = (await firebaseAuth.signInWithEmailAndPassword(
               email: email, password: password))
           .user!;
       if (user != null) {
@@ -28,7 +29,7 @@ class AuthService {
   //register
   Future registeruser(String fullname, String email, String password) async {
     try {
-      User user = (await firebaseAuth.createUserWithEmailAndPassword(
+      User? user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user!;
       if (user != null) {

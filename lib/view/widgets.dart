@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 const primarycolor = Color(0xFFee7b64);
 const textinputdecoration = InputDecoration(
-  
     labelStyle: TextStyle(color: primarycolor, fontWeight: FontWeight.w300),
     focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: primarycolor, width: 2)),
@@ -23,10 +22,10 @@ void showsnackbar(context, color, messsage) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(
       messsage,
-      style: TextStyle(fontSize: 14),
+      style: const TextStyle(fontSize: 14),
     ),
     backgroundColor: color,
-    duration: Duration(seconds: 2),
+    duration: const Duration(seconds: 2),
     action: SnackBarAction(
       label: 'ok',
       onPressed: () {},

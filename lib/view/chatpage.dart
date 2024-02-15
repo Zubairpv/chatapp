@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chatt_app/controller/shared%20preference.dart';
+import 'package:chatt_app/controller/shared_preference.dart';
 import 'package:chatt_app/view/voicetile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,11 +50,11 @@ class _ChatPageState extends State<ChatPage> {
           isRecording = true;
         });
       } catch (err) {
-        print('Error: $err');
+        debugPrint('Error: $err');
       }
     } else {
       Permission.microphone.request();
-      print('Microphone permission not granted');
+      debugPrint('Microphone permission not granted');
     }
   }
 
@@ -88,7 +88,7 @@ class _ChatPageState extends State<ChatPage> {
           Shared.savefile1(i);
         });
       } catch (err) {
-        print('Error: $err');
+        debugPrint('Error: $err');
       }
     }
   }

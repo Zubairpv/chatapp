@@ -43,7 +43,7 @@ class _VoicetileState extends State<Voicetile> {
         isPlaying = false;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

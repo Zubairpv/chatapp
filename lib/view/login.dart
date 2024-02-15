@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../controller/authsevice.dart';
-import '../controller/shared preference.dart';
+import '../controller/shared_preference.dart';
 import 'home.dart';
 import 'register.dart';
 import 'widgets.dart';
@@ -28,19 +28,19 @@ class _LoginState extends State<Login> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+          padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
           child: Form(
               key: formkey,
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Groupie',
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Login now to see what they are talking!',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                   ),
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                           : 'Enter valid Email';
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                       });
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
@@ -100,22 +100,22 @@ class _LoginState extends State<Login> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30)),
                             elevation: 0,
-                            primary: Theme.of(context).primaryColor),
-                        child: Text(
+                            backgroundColor: Theme.of(context).primaryColor),
+                        child: const Text(
                           'Sign in',
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text.rich(TextSpan(
                       text: "don't have an account?",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
+                      style: const TextStyle(color: Colors.black, fontSize: 14),
                       children: [
                         TextSpan(
                             text: 'Register here',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.black,
                                 decoration: TextDecoration.underline),
                             recognizer: TapGestureRecognizer()
@@ -139,7 +139,7 @@ class _LoginState extends State<Login> {
         if (value == true) {
           Shared.saveemail(email);
           Shared.saveloggedin(true);
-          nextscreenreplace(context, MyHomePage());
+          nextscreenreplace(context, const MyHomePage());
         } else {
           showsnackbar(context, Colors.red, value);
           setState(() {

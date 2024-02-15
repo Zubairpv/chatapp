@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'controller/shared preference.dart';
+import 'controller/shared_preference.dart';
 import 'view/home.dart';
 import 'view/login.dart';
 import 'view/profile.dart';
@@ -25,11 +25,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     getuser();
     Shared.getimage().then((value) {
-      print(value);
+      debugPrint(value.toString());
       setState(() {
         url = value;
       });
-      print('url-$url');
+      debugPrint('url-$url');
     });
     super.initState();
   }
