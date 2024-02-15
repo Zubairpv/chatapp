@@ -23,7 +23,7 @@ This is a group-based chat application that allows users to communicate via text
 - **path_provider: ^2.1.2:** For accessing the device's file system paths.
 
 ## Installation
-1. Clone the repository: `git clone https://github.com/your-repository.git`
+1. Clone the repository: `git clone https://github.com/Zubairpv/chatapp.git`
 2. Navigate to the project directory: `cd chat_app`
 3. Install dependencies: `flutter pub get`
 4. Run the app: `flutter run`
